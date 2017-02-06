@@ -1,0 +1,16 @@
+#!/bin/sh
+#echo '-'
+
+sqlplus -S "/ as sysdba" <<EOC
+set heading off;
+set feed off;
+set line 850;
+set pagesize 0;
+set colsep "|"; 
+column event format a30;
+	column p1text format a20;
+	column p2text format a20;
+select event,p1,decode(p1text,null,'null',p1text),p2,decode(p2text,null,'null',p2text)from v\$session_wait where event not like '%SQL%' and event not like 'rdbms%';
+exit;
+
+EOC|format

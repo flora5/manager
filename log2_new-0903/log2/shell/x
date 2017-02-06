@@ -1,0 +1,5 @@
+Linux 2.6.18-128.el5 (ufc3)  01/18/2010         _x86_64_        (4 CPU)
+
+03:20:12 PM     CPU     %user     %nice   %system   %iowait    %steal     %idle
+03:20:13 PM     all      0.25      0.00      0.50      0.25      0.00     99.00
+Average:        all      0.25      0.00      0.50      0.25      0.00     99.00

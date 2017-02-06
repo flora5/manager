@@ -1,0 +1,13 @@
+#!/bin/sh
+#echo '-'
+
+sqlplus -S "/ as sysdba" << !
+set heading off;
+set feed off;
+set line 850;
+set pagesize 0;
+set colsep "|"; 
+select event,total_waits from (select event,total_waits 
+from v\$system_event order by total_waits desc) where rownum<6;
+exit;
+!

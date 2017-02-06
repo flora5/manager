@@ -1,0 +1,79 @@
+#
+# netinfo_user_id <domain> <name>
+# Get ID for a user
+#
+netinfo_user_id ()
+{
+    local domain="$1";
+    local   name="$2";
+    local id;
+
+    id=$(nicl "${domain}" -read "/users/${UserName}" uid 2> /dev/null | sed 's|^uid: ||');
+
+    if [ -z "${id}" ]; then return 1; fi;
+
+    echo "${id}";
+
+    return 0;
+}
+
+#
+# netinfo_user_name <domain> <id>
+# Get name for a user
+#
+netinfo_user_name ()
+{
+    local domain="$1";
+    local     id="$2";
+    local name;
+
+    name=$(nigrep "${id}" "${domain}" |
+           grep '^[0-9][0-9]* /users/[^:]*: *uid '"${id}"'$' |
+           sed 's|^[0-9][0-9]* /users/\([^:]*\):.*|\1|');
+
+    if [ -z "${name}" ]; then return 1; fi;
+
+    echo "${name}";
+
+    return 0;
+}
+
+#
+# netinfo_group_id <domain> <name>
+# Get ID for a group
+#
+netinfo_group_id ()
+{
+    local domain="$1";
+    local   name="$2";
+    local id;
+
+    id=$(nicl "${domain}" -read "/groups/${name}" gid 2> /dev/null | sed 's|^gid: ||');
+
+    if [ -z "${id}" ]; then return 1; fi;
+
+    echo "${id}";
+
+    return 0;
+}
+
+#
+# netinfo_group_name <domain> <id>
+# Get name for a group
+#
+netinfo_group_name ()
+{
+    local domain="$1";
+    local     id="$2";
+    local name;
+
+    name=$(nigrep "${id}" "${domain}" |
+           grep '^[0-9][0-9]* /groups/[^:]*: *gid '"${id}"'$' |
+           sed 's|^[0-9][0-9]* /groups/\([^:]*\):.*|\1|');
+
+    if [ -z "${name}" ]; then return 1; fi;
+
+    echo "${name}";
+
+    return 0;
+}

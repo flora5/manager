@@ -1,0 +1,12 @@
+#!/bin/sh
+#echo '-'
+sqlplus -S "/ as sysdba" << !
+set heading off;
+set line 850;
+set pagesize 0;
+set feed off;
+set colsep "|";
+-- column member for a40;
+select INST_ID,GROUP#,decode(STATUS,null,'null',STATUS),TYPE,MEMBER from gv\$logfile order by inst_id,group#;
+exit;
+!

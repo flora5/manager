@@ -1,0 +1,9 @@
+#!/bin/sh
+
+#date "+%H:%M:%S"
+#while read line
+#do
+chan=$1
+echo "DISPLAY QUEUE('"$chan"')"|runmqsc|python mq.py $chan
+#done < QUEUE.CONF
+

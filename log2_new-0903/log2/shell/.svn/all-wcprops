@@ -1,0 +1,191 @@
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/log2/!svn/ver/134/Dev/trunk/client/shell
+END
+swap-sh-back
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/log2/!svn/ver/33/Dev/trunk/client/shell/swap-sh-back
+END
+get_netstat
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/log2/!svn/ver/143/Dev/trunk/client/shell/get_netstat
+END
+get_app_status
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/log2/!svn/ver/143/Dev/trunk/client/shell/get_app_status
+END
+user.sh
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/log2/!svn/ver/33/Dev/trunk/client/shell/user.sh
+END
+get_memory_performance
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/log2/!svn/ver/144/Dev/trunk/client/shell/get_memory_performance
+END
+get_tcpv4_traffic_errors
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/log2/!svn/ver/58/Dev/trunk/client/shell/get_tcpv4_traffic_errors
+END
+sar-sh
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/log2/!svn/ver/33/Dev/trunk/client/shell/sar-sh
+END
+s2.sh
+K 25
+svn:wc:ra_dav:version-url
+V 46
+/log2/!svn/ver/33/Dev/trunk/client/shell/s2.sh
+END
+get_net_if_errs
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/log2/!svn/ver/143/Dev/trunk/client/shell/get_net_if_errs
+END
+get_oracle_sid
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/log2/!svn/ver/108/Dev/trunk/client/shell/get_oracle_sid
+END
+get_oracle_session
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/log2/!svn/ver/111/Dev/trunk/client/shell/get_oracle_session
+END
+vmstat1-sh
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/log2/!svn/ver/33/Dev/trunk/client/shell/vmstat1-sh
+END
+get_cpu_performance
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/log2/!svn/ver/143/Dev/trunk/client/shell/get_cpu_performance
+END
+get_udpv4_network_traffic
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/log2/!svn/ver/58/Dev/trunk/client/shell/get_udpv4_network_traffic
+END
+get_icmpv4_per_type
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/log2/!svn/ver/143/Dev/trunk/client/shell/get_icmpv4_per_type
+END
+get_oracle_ts
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/log2/!svn/ver/108/Dev/trunk/client/shell/get_oracle_ts
+END
+get_disk_io
+K 25
+svn:wc:ra_dav:version-url
+V 53
+/log2/!svn/ver/143/Dev/trunk/client/shell/get_disk_io
+END
+x.sh
+K 25
+svn:wc:ra_dav:version-url
+V 45
+/log2/!svn/ver/33/Dev/trunk/client/shell/x.sh
+END
+get_ifconfig
+K 25
+svn:wc:ra_dav:version-url
+V 54
+/log2/!svn/ver/143/Dev/trunk/client/shell/get_ifconfig
+END
+get_swap_space
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/log2/!svn/ver/141/Dev/trunk/client/shell/get_swap_space
+END
+get_processes_snapshot
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/log2/!svn/ver/132/Dev/trunk/client/shell/get_processes_snapshot
+END
+get_ipv4_network_errors
+K 25
+svn:wc:ra_dav:version-url
+V 64
+/log2/!svn/ver/58/Dev/trunk/client/shell/get_ipv4_network_errors
+END
+vmstat-sh
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/log2/!svn/ver/33/Dev/trunk/client/shell/vmstat-sh
+END
+get_ipv4_network_traffic
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/log2/!svn/ver/58/Dev/trunk/client/shell/get_ipv4_network_traffic
+END
+get_all_users
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/log2/!svn/ver/143/Dev/trunk/client/shell/get_all_users
+END
+startsh
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/log2/!svn/ver/141/Dev/trunk/client/shell/startsh
+END
+prompt.sh
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/log2/!svn/ver/33/Dev/trunk/client/shell/prompt.sh
+END
+get_disk_space
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/log2/!svn/ver/143/Dev/trunk/client/shell/get_disk_space
+END
+get_tcpv4_network_traffic
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/log2/!svn/ver/58/Dev/trunk/client/shell/get_tcpv4_network_traffic
+END
+netinfo.sh
+K 25
+svn:wc:ra_dav:version-url
+V 51
+/log2/!svn/ver/33/Dev/trunk/client/shell/netinfo.sh
+END
+get_icmpv4_activity
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/log2/!svn/ver/143/Dev/trunk/client/shell/get_icmpv4_activity
+END

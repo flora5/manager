@@ -1,0 +1,41 @@
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+# Language Version: 2.5.1
+# Last Changed: 2010-01-12 14:41:18
+"""docstring
+"""
+
+__author__ = "Maitreya Dutt Chao (leonardr@segfault.org)"
+__version__ = "0.0.1"
+__copyright__ = "Copyright (c) 2004-2008 Maitreya Dutt Chao"
+__license__ = "New-style BSD"
+
+import os
+from subprocess import Popen, PIPE
+
+from address import icmpaddr
+
+def icmppack(addr):
+    sp = Popen(['sh icmppack.sh %s' % addr,],
+            stdout=PIPE, stderr=PIPE, shell=True)
+    sts = os.waitpid(sp.pid, 0)
+    out = sp.stdout.read().strip()
+    if out == '0':
+        return 1
+    else:
+        return 0
+    #print 'out:',out
+
+def test():
+    xx = {}
+    for addr in icmpaddr:
+        #xx.update({':'.join((addr[0],str(addr[1]))):icmppack(addr)})
+        #print 'addr:',addr,icmppack(addr)
+        xx.update({addr:icmppack(addr)})
+    #print '-', ''.join(str(xx).split())
+    print ''.join(str(xx).split())
+
+if __name__ == '__main__':
+    test()
+    #print icmppack('192.168.8.1')
+

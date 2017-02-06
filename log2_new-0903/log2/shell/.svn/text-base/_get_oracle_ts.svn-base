@@ -1,0 +1,48 @@
+#!/bin/sh
+#
+#get_oracle_ts
+# 1.1.1.1 接口概念
+# 获得实时oracle数据库的 表空间信息
+#  1.1.1.2 输入
+#  无
+#   1.1.1.3 输出
+#   表空间名  
+#   表空间大小 
+#   已经使用的表空间大小 
+#    使用比 
+#    空闲空间  
+#    最大块
+    
+    
+     sqlplus -S "/ as sysdba" << !
+     set heading off;
+     set line 290;
+     set feed off;
+     set pagesize 0;
+     SELECT UPPER(F.TABLESPACE_NAME) "tablespace_name", D.TOT_GROOTTE_MB "total(M)", D.TOT_GROOTTE_MB - F.TOTAL_BYTES "userd(M)", TO_CHAR(ROUND((D.TOT_GROOTTE_MB - F.TOTAL_BYTES) / D.TOT_GROOTTE_MB * 100, 2), '990.99') "%", F.TOTAL_BYTES "free(M)", F.MAX_BYTES "max(M)" FROM (SELECT TABLESPACE_NAME, ROUND(SUM(BYTES) / (1024 * 1024), 2) TOTAL_BYTES, ROUND(MAX(BYTES) / (1024 * 1024), 2) MAX_BYTES FROM SYS.DBA_FREE_SPACE GROUP BY TABLESPACE_NAME) F, (SELECT DD.TABLESPACE_NAME, ROUND(SUM(DD.BYTES) / (1024 * 1024), 2) TOT_GROOTTE_MB FROM SYS.DBA_DATA_FILES DD GROUP BY DD.TABLESPACE_NAME) D WHERE D.TABLESPACE_NAME = F.TABLESPACE_NAME ORDER BY F.TABLESPACE_NAME;
+     exit;
+     ! 
+ 
+
+
+
+
+
+
+
+
+
+###################################################
+##### SETUP THE ENVIRONMENT FOR EACH OS HERE ######
+#  注：脚本默认使用sysdba角色，
+# 1 若系统不开放这个权限，可以新建用户create  user uaer_name indentified by password;
+#
+# 2  需要添加对相关视图和系统表的授权：
+#        grant connect,resource to user_name;
+#        GRANT SELECT ON  SYS.DBA_FREE_SPACE TO user_name; 
+#        GRANT SELECT ON  SYS.DBA_DATA_FILES TO  uaer_name; 
+#        GRANT SELECT ON  v$session TO  uaer_name;
+# 3  修改登陆方式   sqlplus -S uaer_name/password << !
+#
+#################################################
+

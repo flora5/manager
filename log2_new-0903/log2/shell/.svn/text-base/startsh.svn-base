@@ -1,0 +1,48 @@
+#!/bin/sh
+
+putf()
+{
+#	echo $1
+	HOSTN=`hostname`
+	$1 > upload/$1
+	#ftp -i -n >/dev/null <<END_OF_FTP
+	ftp -i -n  <<END_OF_FTP
+open localhost 2121
+user zhaowp 1234
+put upload/$1 project/log2/Dev/trunk/client/upload/$1@$HOSTN
+bye
+END_OF_FTP
+}
+
+#user anonymous anonymous
+run()
+{
+	for f in get*
+	do
+		echo $f
+		putf $f &
+		#put $f
+	done
+#wait
+sleep 5
+#while true
+#do
+#	nohup put get_all_users &
+#	sleep 5
+#done
+}
+
+while true
+do
+run
+done
+#main
+#nohup putf get_all_users &
+#putf get_all_users &
+#while true
+#do
+#	nohup run get_all_users &
+#	sleep 5
+#done
+
+#nohup main &

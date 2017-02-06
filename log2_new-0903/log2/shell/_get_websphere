@@ -1,0 +1,80 @@
+#!/usr/bin/env python
+# -*- coding: UTF-8 -*-
+# Language Version: 2.5.1
+# Last Changed: 2009-09-22 11:45:19
+"""
+"""
+
+__author__ = "Maitreya Dutt Chao (leonardr@segfault.org)"
+__version__ = "0.0.1"
+__copyright__ = "Copyright (c) 2004-2008 Maitreya Dutt Chao"
+__license__ = "New-style BSD"
+
+import httplib2
+from BeautifulSoup import BeautifulSoup
+#from BeautifulSoup import BeautifulStoneSoup
+#from xml.dom.minidom import parseString
+h = httplib2.Http(".cache")
+#resp, content = h.request("http://192.168.0.2:9080/wasPerfTool/servlet/perfservlet", "GET")
+url = "http://192.168.0.2:9080/wasPerfTool/servlet/perfservlet?Module=jvmRuntimeModule+systemModule"
+#+connectionPoolModule"
+#url = "http://192.168.0.2:9080/wasPerfTool/servlet/perfservlet?Module=webAppModule"
+#url = "http://192.168.0.2:9080/wasPerfTool/servlet/perfservlet?Module=webAppModule"
+resp, content = h.request(url, "GET")
+#resp, content = h.request("http://192.168.0.2:9080/wasPerfTool/servlet/perfservlet?Module=jvmRuntimeModule", "GET")
+#resp, content = h.request("http://192.168.0.2:9080/wasPerfTool/servlet/perfservlet?Module=webAppModule", "GET")
+#print content
+#doc = BeautifulStoneSoup(content)
+doc = BeautifulSoup(content)
+
+print '-'
+j = doc.jvmruntimemodule
+print j.totalmemory.perfloadinfo['currentvalue']
+print j.usedmemory.perfnumericinfo['val']
+print j.freememory.perfnumericinfo['val']
+print j.uptime.perfnumericinfo['val']
+
+s = doc.systemmodule
+print s.cpuutilization.perfnumericinfo['val']
+print s.avgcpuutilization.perfstatinfo['mean']
+print s.freememory.perfnumericinfo['val']
+
+#print doc.connectionpoolmodule
+#print doc.webappmodule
+#print doc.webappmodule['webmodule']
+#print doc.webappmodule.findAll('webmodule')
+
+#c =  doc.connectionpoolmodule.cloudscape_jdbc_provider.defaultdatasource
+#print c.numcreates.perfnumericinfo['val']
+#print c.numdestroys.perfnumericinfo['val']
+#print c.numallocates.perfnumericinfo['val']
+#print c.numreturns.perfnumericinfo['val']
+#print c.poolsize.perfloadinfo['currentvalue']
+#print c.concurrentwaiters.perfloadinfo['currentvalue']
+#print c.faults.perfnumericinfo['val']
+#print c.percentused.perfloadinfo['currentvalue']
+#print c.avgusetime.perfstatinfo['total']
+#print c.avgwaittime.perfstatinfo['total']
+#print c.nummanagedconnections.perfnumericinfo['val']
+#print c.numconnectionhandles.perfnumericinfo['val']
+#print c.prepstmtcachediscards.perfnumericinfo['val']
+#print c.jdbcoperationtimer.perfstatinfo['total']
+#
+#w = doc.webappmodule('webmodule')[0]
+#print w['name']
+#print w.totalrequests.perfnumericinfo['val']
+#print w.concurrentrequests.perfloadinfo['currentvalue']
+#print w.responsetime.perfstatinfo['total']
+#print w.numerrors.perfnumericinfo['val']
+
+#print doc.find(text=re.compile('webmodule'))
+#print doc('webmodule')
+##print resp
+#print 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+
+def test():
+    pass
+
+if __name__ == '__main__':
+    test()
+

@@ -1,0 +1,4 @@
+          tput smso
+          echo " WARNING: Paging Space has Exceeded the
+$% Upper Limit! "
+          tput rmso

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+#date "+%H:%M:%S"
+#while read chan
+#do
+chan=$1
+status=`echo "DISPLAY CHSTATUS('"$chan"')"|runmqsc|grep STATUS|python mq.py`
+echo "DISPLAY CHANNEL('"$chan"')"|runmqsc|python mq.py $chan $status
+#done < CHANNEL.CONF
+

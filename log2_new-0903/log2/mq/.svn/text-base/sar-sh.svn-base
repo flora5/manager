@@ -1,0 +1,67 @@
+#!/bin/ksh
+
+
+SECS=30  # Defines the number of seconds for each sample
+INTERVAL=10 # Defines the total number of sampling intervals
+OS=$(uname) # Defines the UNIX flavor
+
+###################################################
+##### SETUP THE ENVIRONMENT FOR EACH OS HERE ######
+###################################################
+
+# These "F-numbers" point to the correct field in the
+# command output for each UNIX flavor.
+
+case $OS in
+AIX|HP-UX|SunOS)  
+       F1=2
+       F2=3
+       F3=4
+       F4=5
+       echo " The Operating System is $OS "
+       ;;
+Linux)
+       F1=3
+       F2=4
+       F3=5
+       F4=6
+       echo " The Operating System is $OS "
+       ;;
+*) echo " ERROR: $OS is not a supported operating system "
+   echo " ...EXITING... "
+   exit 1
+   ;;
+esac
+
+###################################################
+######## BEGIN GATHERING STATISTICS HERE ##########
+###################################################
+
+echo "Gathering CPU Statistics using sar... "
+echo "There are $INTERVAL sampling periods with"
+echo "each interval lasting $SECS seconds"
+echo " ...Please wait while gathering statistics... "
+
+# This "sar" command take $INTERVAL samples, each lasting
+# $SECS seconds. The average of this output is captured.
+
+sar $SECS $INTERVAL | grep Average | awk "{print $"$F1", $"$F2", $"$F3", $"$F4"}" | while read FIRST SECOND THIRD FOURTH
+do
+      # Based on the UNIX Flavor, tell the user the
+      # result of the statistics gathered.
+
+      case $OS in
+      AIX|HP-UX|SunOS)
+            echo " User part is $%"
+            echo "System part is $%"
+            echo "I/O wait state is $%"
+            echo "Idle time is $% "
+            ;;
+      Linux)
+            echo " User part is $%"
+            echo "Nice part is $%"
+            echo "System part is $%"
+            echo "Idle time is $% "
+            ;;
+      esac
+done

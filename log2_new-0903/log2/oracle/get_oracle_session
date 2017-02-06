@@ -1,0 +1,63 @@
+
+# 1.1.1.1 接口概念
+# 获得实时oracle数据库的 数据库连接信息
+#  1.1.1.2 输入
+#  无
+
+#    
+#echo '-'
+sqlplus -S "/as sysdba" << !
+#set heading off;
+set line 650;
+#set feed off;
+#set pagesize 0;
+set colsep "|";
+
+#	column inst_id			 format 9999
+#	COLUMN sid               FORMAT 9999        HEADING 'SID'
+#	COLUMN serial_id         FORMAT 9999999999   HEADING 'Serial ID'
+#	COLUMN session_status    FORMAT a14         HEADING 'Status'          
+#	COLUMN oracle_username   FORMAT a14        HEADING 'Oracle User'     
+#	COLUMN os_username       FORMAT a10        HEADING 'O/S User'        
+#	COLUMN os_pid            FORMAT 9999999    HEADING 'O/S PID'         
+#	COLUMN session_program   FORMAT a40        HEADING 'Session Program' 
+#	COLUMN session_machine   FORMAT a15        HEADING 'Machine'         
+SELECT
+s.inst_id inst_id,
+s.sid sid,
+s.serial# serial_id,
+s.status session_status,
+decode(s.username,null,'sys',s.username),
+s.osuser os_username,
+p.spid os_pid,
+s.program session_program,
+--, lpad(s.terminal,10) session_terminal,
+s.machine session_machine
+FROM gv\$process p, gv\$session s
+WHERE p.addr (+) = s.paddr
+ORDER BY inst_id,sid;
+exit;
+!
+
+
+
+
+
+
+
+
+###################################################
+##### SETUP THE ENVIRONMENT FOR EACH OS HERE ######
+#  注：脚本默认使用sysdba角色，
+# 1 若系统不开放这个权限，可以新建用户create  user uaer_name indentified by password;
+#
+# 2  需要添加对相关视图和系统表的授权：
+#        grant connect,resource to user_name;
+#        GRANT SELECT ON  SYS.DBA_FREE_SPACE TO user_name; 
+#        GRANT SELECT ON  SYS.DBA_DATA_FILES TO  uaer_name; 
+#       GRANT SELECT ON SYS.V_$SESSION TO bo; 
+#
+# 3  修改登陆方式   sqlplus -S uaer_name/password << !
+#
+#################################################
+

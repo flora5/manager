@@ -1,0 +1,5 @@
+#!/bin/sh
+#echo '-'
+tail -n 50 /u02/admin/jfdz9204/bdump/alert_${ORACLE_SID}.log|sed 's/ /\&#10;/g'
+
+#tail -n 50 ${BDUMP}/alert_${ORACLE_SID}.log

@@ -1,0 +1,449 @@
+
+sqlplus myadmin/111111@//192.168.8.87:1521/cuitest
+sqlplus itsm/itsm@//192.168.8.86:1521/ora10
+
+
+
+
+
+MONITOR_MISSION  任务   N.1 -----> N.3
+
+
+MISSION_ID
+------------------------------------------------------------
+MISSION_NAME	
+------------------------------------------------------------					     
+BEGIN_TIME
+------------------------------------------------------------ ----------
+END_TIME   
+---------- ------------------------------------------------------------
+PERSON
+------------------------------------------------------------	
+REMARK
+
+
+
+
+MONITOR_RESOURCE  资源   N.2 
+
+
+
+MRESOURCE_ID
+------------------------------------------------------------
+PERSON_ID
+------------------------------------------------------------
+RESOURCE_ID  # 
+------------------------------------------------------------
+REMARK
+
+select  RESOURCE_ID from MONITOR_RESOURCE where MRESOURCE_ID in 
+(select MRESOURCE_ID from MONITOR_MISSION_RESOURCE where mission_id = '%s') %(x[0])
+
+
+
+MONITOR_MISSION_RESOURCE 任务资源   N.3 <-----N.2
+					<-------N.1
+
+
+MRESOURCE_ID     # one mission_id has many mresource_id
+------------------------------------------------------------
+MISSION_ID
+------------------------------------------------------------
+MISSION_RESOURCE_ID
+
+
+
+
+
+
+
+
+
+
+
+MONITOR_ITEM  项     N.4
+
+
+ITEM_ID
+------------------------------------------------------------
+ITEM_NAME  # have to same as the protocol : get item_name 
+------------------------------------------------------------
+IS_ALERT  ??
+------------------------------------------------------------
+TABLE_NAME
+------------------------------------------------------------
+TYPE
+------------------------------------------------------------
+STRATEGY_ID
+------------------------------------------------------------
+REMARK
+--------------------------------------------------------------------------------
+
+
+
+
+
+
+
+MONITOR_ATTRIBUTE  属性      N.5
+
+
+
+
+
+
+ATTRIBUTE_ID
+------------------------------------------------------------
+FIELDTYPE
+------------------------------------------------------------
+ISNULL
+------------------------------------------------------------
+FIELDNAME
+------------------------------------------------------------
+ITEM_ID
+------------------------------------------------------------
+ISPRIMARY
+
+
+
+
+
+
+
+MONITOR_STRATEGY 策略       N.6 <----N.4
+
+
+STRATEGY_ID	
+------------------------------------------------------------ --------------					     
+SERIOUS_ALERT # 
+------------------------------------------------------------ -------------
+COMMON_ALERT # X no attr id--don't know compare with which attr  #
+------------ --------------
+CINTERVAL_TIME 采集间隔时间
+------------ --------------
+MANNER		
+------------------------------------------------------------ --------------					     
+SINTERVAL_TIME  统计间隔时间（）X
+------------------------------------------------------------ --------------
+STIME_LENGTH  #  
+
+
+
+
+MONITOR_RESOURCE_ITEM  资源项      N.7  one mresource_id has many item_id 
+
+
+RESOURCE_ITEM_ID
+------------------------------------------------------------
+MRESOURCE_ID
+------------------------------------------------------------
+ITEM_ID
+
+
+
+
+# 存告警信息的表名: ALERT_INFO
+
+
+
+INFO_ID                      info_id
+------------------------------------------------------------
+RESOURCE_ID                  resource_id   # change_to M_resource_id 08-12 1:33 pm
+------------------------------------------------------------
+ITEM_ID 	             
+------------------------------------------------------------					     
+ALERT_TIME       时间        time.ctime()
+------------------------------------------------------------ ----------
+ALERT_MESSAGE    报警信息  X  #  ""
+--------------------------------------------------------------------------------
+AL ALERT_NAME	报警名称 X  ("host down") for example
+------------------------------------------------------------ ----------						
+ALERT_TYPE#    报警类型—— x (声音报警 邮件报警... 现在还没有 空)以后可能改成 alert_type_id
+-- ------------------------------------------------------------ ----------
+REMARK  暂时保存是严重告警还是普通告警 
+--------------------------------------------------------------------------------
+IS_INTERMIT  是否中断  # ?  单独一行  0中断
+                                   1 非中断
+
+SELECT COLUMN_NAME,DATA_TYPE from USER_TAB_COLUMNS where TABLE_NAME='ALERT_INFO';
+
+
+select DATA_TYPE from User_Tab_Columns t where t.column_name=upper('column_name') 
+and T.TABLE_NAME=upper(trim('table_name'));
+
+空间不足
+
+ 224f9f11-e284-48b7-a56f-1a3271a649ce
+ 224f9f11-e284-48b7-a56f-1a3271a649ce
+
+
+MONITOR_ITEM_DISK
+--------------------------
+MOUNTPOINT
+QUOTA
+FREE  @
+USED
+FILESIZE
+FILESYSTEM
+MRESROUCE_ID
+COLLECTION_TIME
+ID
+
+-------------------------
+
+MONITOR_ITEM_CPU
+
+
+ID # 自动生成
+M_resouce_id
+gathertime
+
+DAta:   ＃
+
+
+
+
+
+# six table name 
+
+MONITOR_ITEM_MEMORY
+MONITOR_ITEM_DISK
+MONITOR_ITEM_SWAP
+MONITOR_ITEM_CPU
+MONITOR_ITEM_USER
+MONITOR_ITEM_PROCESSES
+
+------------------------
+MONITOR_ITEM_MEMORY: 
+========================
+MRESOURCE_ID
+COLLECTION_TIME
+FREE @
+USED
+TOTAL
+ID
+
+--------------------------
+MONITOR_ITEM_DISK
+=========================
+MOUNTPOINT
+QUOTA  # IS keyword
+FREE @
+USED
+FILESIZE
+FILESYSTEM
+MRESROUCE_ID
+COLLECTION_TIME
+ID
+
+---------------------------
+MONITOR_ITEM_SWAP
+==========================
+FREE @
+USED 
+TOTAL
+MRESOURCE_ID
+COLLECTION_TIME
+ID
+
+-------------------------
+MONITOR_ITEM_CPU  X
+========================
+WIO
+SYSTIME
+ID
+COLLECTION_TIME
+MRESOURCE_ID
+USERTIME
+FREETIME
+-------------------------
+MONITOR_ITEM_USER
+==========================
+MRESOURCE_ID
+WHAT
+COLLECTION_TIME
+USERNAME
+TTY
+LOGIN
+IDLE
+ID     # genereted by uuid
+JCPU
+PCPU  @ ? 
+
+select username from MONITOR_ITEM_USER order by COLLECTION_TIME;
+----------------------------
+MONITOR_ITEM_PROCESSES
+============================
+ZCPU @
+STATE
+RSS
+VSZ
+NI
+PRI
+USERN
+PID
+PROCESS_NAME
+COLLECTION_TIME
+MRESOURCE_ID
+ID
+
+
+
+RESOURCE_DATA:    RESOURCEID  MRESOURCEID  MAP
+
+
+RESOURCENAME
+--------------------------------------------------------------------------------
+USERID
+------------------------------------------------------------
+RESOURCETYPEID
+------------------------------------------------------------
+RESOURCETITLE
+
+
+
+
+逗号分隔值
+
+CSV 格式因其简洁性和跨平台设计常用于组织间的信息交换。使用正则表达式通常可以轻松地分析逗号分隔值，但使用 Python 的 csv 模块可以使此任务变得更为容易。
+
+使用该模块要求开发人员熟悉该模块所采用的逻辑。有关 CSV 文件的最重要的信息是它的“方言”，它包含分隔符、引号字符、行终结符等相关信息。Python 2.5 中目前可用的方言是 excel 和 excel-tab。内置的嗅探器总是试图猜测正确的格式。写入器与阅读器对象支持 CSV 数据的输入和输出。
+
+就本例而言，我用的是 HR 模式的 JOBS_HISTORY 表中的数据。它演示了如何直接从一个 SQL 查询创建 CSV 文件 job_history.csv。
+
+	  
+>>> import csv
+>>> import cx_Oracle
+>>> db = cx_Oracle.connect('hr/hrpwd@localhost:1521/XE')
+>>> cursor = db.cursor()
+>>> f = open("job_history.csv", "w")
+>>> writer = csv.writer(f, lineterminator="\n", quoting=csv.QUOTE_NONNUMERIC)
+>>> r = cursor.execute(" "SELECT * FROM job_history ORDER BY employee_id, start_date")
+>>> for row in cursor:
+...   writer.writerow(row)
+...
+>>> f.close()
+
+该文件包含：
+
+101,"1989-09-21 00:00:00","1993-10-27 00:00:00","AC_ACCOUNT",110
+101,"1993-10-28 00:00:00","1997-03-15 00:00:00","AC_MGR",110
+102,"1993-01-13 00:00:00","1998-07-24 00:00:00","IT_PROG",60
+114,"1998-03-24 00:00:00","1999-12-31 00:00:00","ST_CLERK",50
+122,"1999-01-01 00:00:00","1999-12-31 00:00:00","ST_CLERK",50
+176,"1998-03-24 00:00:00","1998-12-31 00:00:00","SA_REP",80
+176,"1999-01-01 00:00:00","1999-12-31 00:00:00","SA_MAN",80
+200,"1987-09-17 00:00:00","1993-06-17 00:00:00","AD_ASST",90
+200,"1994-07-01 00:00:00","1998-12-31 00:00:00","AC_ACCOUNT",90
+201,"1996-02-17 00:00:00","1999-12-19 00:00:00","MK_REP",20
+
+或者，您可以使用 Oracle SQL Developer 将数据以 CSV 格式导出。
+
+要读取 CSV 文件，使用：
+
+	  
+>>> reader = csv.reader(open("job_history.csv", "r"))
+>>> for employee_id, start_date, end_date, job_id, department_id in reader:
+...   print job_id,
+...
+JOB_ID IT_PROG AC_ACCOUNT AC_MGR MK_REP ST_CLERK ST_CLERK 
+  AD_ASST SA_REP SA_MAN AC_ACCOUNT
+
+注意我不必在上面显式指定方言，它是自动得出的。我只是打印了 job_id 列，但针对这一分析过的文件我真正可以做的是将其插入数据库中。为确保日期得到正确处理，在批量插入前对 NLS_DATE_FORMAT 进行手动设置。
+
+SQL> CREATE TABLE job_his (
+  2     employee_id   NUMBER(6)    NOT NULL,
+  3     start_date    DATE         NOT NULL,
+  4     end_date      DATE         NOT NULL,
+  5     job_id        VARCHAR2(10) NOT NULL,
+  6     department_id NUMBER(4)
+  7 );
+
+>>> reader = csv.reader(open("job_history.csv", "r"))
+>>> lines = []
+>>> for line in reader:
+...   lines.append(line)
+...
+>>> cursor.execute("ALTER SESSION SET NLS_DATE_FORMAT = 'YYYY-MM-DD HH24:MI:SS'")
+>>> cursor.executemany("INSERT INTO job_his VALUES(:1,:2,:3,:4,:5)", lines)
+>>> db.commit()
+
+如果您使用 SQL Developer 创建了 CSV 文件，您可能需要修改日期格式，如下所示：
+
+>>> cursor.execute("ALTER SESSION SET NLS_DATE_FORMAT = 'YY/MM/DD'")
+
+csv 模块美中不足的地方是缺乏自身的 UnicSLA_COL_RESOURCEode 支持。有关解决方案和使用 CSV 文件的更多示例，请参见 Python 库参考 的 9.1.5 示例部分。
+
+
+
+
+
+
+
+
+
+
+
+MONITOR_RESOURCE
+
+
+
+
+
+{'resourceData84e8e74bb8ac4b60aac48bc02bdda342': '2f804c0e-136a-43a9-920f-91de66a3e32b', 'resourceData5f8336b31e6f4240832791e5ca5f2971': '43e3442f-3309-4841-b3a1-ec28d67b9bf7', 'resourceData19867f71e8034118804e1dc3991e57ad': '7e3c0c73-9881-4c20-9f55-ae0b1c880eb7', 'resourceData836b0e1d10f34273a8f6c739147fd305': '852e6826-7074-441e-8f55-7ac953d27891', 'resourceDataf7088de0e6e745f6ae40c4ef0084a16b': '8a679d9d-9bc5-4ccc-b820-1134a5e6f486', 'resourceData3d839e2c4eff4663a1dfbd6e32c042a2': '224f9f11-e284-48b7-a56f-1a3271a649ce'}
+
+# -------------------------------------------------------------
+
+
+syslogprotocol = SysLogProtocol()
+address = '/dev/log'
+#reactor.listenUNIXDatagram(address, syslogprotocol) 
+#reactor.run()
+
+syslogprotocol.dataReceived(logstr)
+
+
+
+
+
+
+
+
+en_cn_map = {'disk_space': '磁盘', 'memory_performance': '内存', 'processes_snapshot': '进程cpu占用','swap_space': '交换分区'}
+
+磁盘
+
+# select network_address.ip_address, MONITOR_RESOURCE.MRESOURCE_ID from network_address, MONITOR_RESOURCE where MONITOR_RESOURCE.RESOURCE_ID = network_address.RESOURCE_ID;
+
+
+
+SELECT END_TIME, SYSDATE, EXTRACT(YEAR FROM (SYSDATE-END_TIME) YEAR TO MONTH) FROM MONITOR_MISSION;
+SELECT TO_CHAR(END_TIME), TO_CHAR(BEGIN_TIME),  (END_TIME-BEGIN_TIME) FROM MONITOR_MISSION;
+
+
+SELECT END_TIME, BEGIN_TIME,  ROUND(TO_NUMBER(END_TIME-BEGIN_TIME)*24*60*60) FROM MONITOR_MISSION;
+
+SELECT ROUND(TO_NUMBER(SYSDATE-BEGIN_TIME)*24*60*60) FROM MONITOR_MISSION;
+
+SELECT ((BEGIN_TIME-SYSDATE)*24*60*60) FROM MONITOR_MISSION;
+
+ROUND(TO_NUMBER(END_DATE - START_DATE) * 24)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

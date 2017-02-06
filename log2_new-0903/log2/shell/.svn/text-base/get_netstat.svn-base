@@ -1,0 +1,83 @@
+#!/bin/sh
+#
+#get_netstat
+#   1.3.1.10 	?ӿڸ??? 
+ #   ?ṩ?ԻTCP/UDPt??״̬?ļ???
+ #    1.3.1.11 	????
+ #   ??
+ #    1.3.1.12 	????
+ #   Proto??Э?飬TCP????UDP??
+ #   Recv-Q
+ #   Send-Q
+ #   Local Address
+ #   Foreign Address 
+ #   State??????????????
+    
+exists()
+{
+	type $1 2&>1 /dev/null
+}
+AIX(){ date "+%H:%M:%S"; netstat -tu|awk 'NR>2{print $0}';}
+Digital(){ :;}
+FreeBSD(){ :;}
+HP_UX(){ :;}
+Irix(){ :;}
+Linux(){ date "+%H:%M:%S"; netstat -tu|awk 'NR>2{print $0}';}
+#Linux(){ dx -kP|tail -n+2|sed 's/%//g'; echo $?;}
+OS390(){ :;}
+SCO_SV(){ date "+%H:%M:%S"; netstat|awk 'NR==3 {print $0}';}
+SunOS(){ date "+%H:%M:%S"; netstat|tail +5|awk '/local/{print $6="tcp "$6,$4,$1,$2,$7}';}
+Tru64(){ :;}
+UnixWare(){ date "+%H:%M:%S"; netstat -tu|awk 'NR>2{print $0}';}
+#Win32
+default(){ netstat -tu|awk 'NR>2{print $0}';}
+
+INTERVAL=10	# Defines the total number of sampling intervals
+HOST=`hostname`
+OS=`uname`	# Defines the UNIX flavor
+SECS=30		# Defines the number of seconds for each sample
+STATCOUNT=0	# Initialize a loop counter to 0, zero
+
+###################################################
+##### SETUP THE ENVIRONMENT FOR EACH OS HERE ######
+###################################################
+#$OS
+x=`$OS $*|tr "\n" " "`
+echo $x|sed "s/[0123456789:\-]* /${DATE} /"
+
+# These "F-numbers" point to the correct field in the
+# command output for each UNIX flavor.
+
+       #echo " The Operating System is $OS "
+##Linux
+#exit
+#case $OS in
+#AIX)
+#	$AIX
+#       ;;
+#HP-UX)
+#	$HP_UX
+#       ;;
+#Linux)
+#	echo $Linux
+#	exec $Linux
+#       ;;
+#SCO_SV)
+#	$SCO_SV
+#       ;;
+#SunOS)  
+#	$SunOS
+#       ;;
+#UnixWare)
+#	$UnixWare
+#       ;;
+#*)# echo " ERROR: $OS is not a supported operating system "
+#	$default
+#  # echo " ...EXITING... "
+#   exit 1
+#   ;;
+#esac
+#
+####################################################
+######### BEGIN GATHERING STATISTICS HERE ##########
+####################################################

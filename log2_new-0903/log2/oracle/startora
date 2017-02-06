@@ -1,0 +1,49 @@
+#!/bin/sh
+
+pidfile="../pids/oracle.pid"
+rm upload/get* >/dev/null 2>&1
+exec 4>&1 1>logs/std.log
+exec 5>&2 2>logs/err.log
+if [ -f $pidfile ]; then
+pid=$(ps -ef|grep $(cat $pidfile)|grep $(basename $0))
+if [ "$pid" != "" ]; then
+echo $0": It has already been running!"
+exit 1
+fi
+fi
+echo $$ > $pidfile
+trap "my_exit" 2
+my_exit()
+{
+echo "I exit properly at "$(date +'%Y-%m-%d %H:%M:%S')
+rm $pidfile > /dev/null 2>&1
+exit
+}
+
+#user anonymous anonymous
+run()
+{
+	for f in get*
+	do
+		#echo $f
+		$f > upload/$f &
+	done
+	#echo 'wait...'
+	wait
+	#echo 'wait end'
+	put.py
+
+}
+
+main()
+{
+while true
+do
+	run
+	#sleep 300
+	sleep 5
+done
+}
+
+#run
+main

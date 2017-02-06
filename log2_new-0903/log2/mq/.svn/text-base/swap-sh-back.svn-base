@@ -1,0 +1,148 @@
+#!/bin/sh
+
+
+PC_LIMIT=65            # Upper limit of Swap space percentage
+                       # before notification
+
+THISHOST=$(hostname)   # Host name of this machine
+
+echo " Swap Space Report for $THISHOST "
+date
+
+function SUN_swap_mon
+{
+swap -s|sed -e 's/k/ /g' -e 's/[^0-9| ]//g'|awk '{print $3+$4,$3,$4}'|read SW_TOTAL SW_USED SW_FREE
+
+# Convert the KB measurements to MB measurements
+
+((SW_TOTAL_MB = SW_TOTAL / 1000))
+((SW_USED_MB  = SW_USED / 1000))
+((SW_FREE_MB  = SW_FREE / 1000))
+
+# Produce the remaining part of the report
+
+echo " Total Amount of Swap Space: $MB"
+echo "Total KB of Swap Space Used: $MB"
+echo "Total KB of Swap Space Free: $MB"
+echo " Percent of Swap Space Used: $%"
+echo " Percent of Swap Space Free: $%"
+
+# Grab the integer portion of the percent used
+
+INT_PERCENT_USED=$(echo $PERCENT_USED | cut -d. -f1)
+
+# Check to see if the percentage used maxmum threshold
+# has beed exceeded
+
+}
+
+
+function Linux_swap_mon
+{
+	#free|grep -i swap|awk '{print $2,$3,$4}'|read SW_TOTAL SW_USED SW_FREE
+	free|awk '$1~/[Ss]wap/{print $2,$3,$4}'|read SW_TOTAL SW_USED SW_FREE
+	#read junk SW_TOTAL SW_USED SW_FREE
+}
+
+###########################################################
+
+function HP_UX_swap_mon
+{
+############# CAPTURE AND PROCESS THE DATA ################
+
+# Start a while read loop by using the piped in input from
+# the swapinfo -tm command output.
+
+
+#swapinfo -tm | grep dev | while read junk SW_TOTAL SW_USED SW_FREE PERCENT_USED junk2
+swapinfo -t|grep dev|read junk SW_TOTAL SW_USED SW_FREE PERCENT_USED junk2
+}
+
+###########################################################
+
+function AIX_paging_mon
+{
+################ DEFINE VARIABLES HERE ####################
+
+PAGING_STAT=/tmp/paging_stat.out # Paging Stat hold file
+
+###########################################################
+############# CAPTURE AND PROCESS THE DATA ################
+
+# Load the data in a file without the column headings
+
+lsps -s | tail +2 > $PAGING_STAT
+
+# Start a while loop and feed the loop from the bottom using
+# the $PAGING_STAT file as redirected input
+
+while read TOTAL PERCENT
+do
+     # Clean up the data by removing the suffixes
+     PAGING_MB=$(echo $TOTAL | cut -d "MB" -f1)
+     PAGING_PC=$(echo $PERCENT | cut -d% -f1)
+
+     # Calculate the missing data: %Free, MB used and MB free
+     (( PAGING_PC_FREE = 100 - PAGING_PC ))
+     (( MB_USED = PAGING_MB * PAGING_PC / 100 ))
+     (( MB_FREE = PAGING_MB - MB_USED ))
+
+     # Produce the rest of the paging space report:
+     echo " Total MB of Paging Space: $TOTAL"
+     echo "Total MB of Paging Space Used: $MB"
+     echo "Total MB of Paging Space Free: $MB"
+     echo " Percent of Paging Space Used: $"
+     echo " Percent of Paging Space Free: $%"
+
+     # Check for paging space exceeded the predefined limit
+     if ((PC_LIMIT <= PAGING_PC))
+     then
+          # Paging space is over the limit, send notification
+
+          tput smso  # Turn on reverse video!
+
+          echo " WARNING: Paging Space has Exceeded the $%
+Upper Limit! "
+
+          tput rmso  # Turn off reverse video
+     fi
+
+done < $PAGING_STAT
+
+rm -f $PAGING_STAT
+
+# Add an extra new line to the output
+
+echo " "
+}
+
+###########################################################
+################## BEGINNING OF MAIN ######################
+###########################################################
+
+###########################################################
+################ DEFINE VARIABLES HERE ####################
+
+PC_LIMIT=65            # Upper limit of Swap space percentage
+                       # before notification
+
+THISHOST=$(hostname)   # Host name of this machine
+
+###########################################################
+
+# Find the Operating System and execute the correct function
+
+case $(uname) in
+
+     AIX) AIX_paging_mon
+     ;;
+     HP-UX) HP_UX_swap_mon
+     ;;
+     Linux) Linux_swap_mon
+     ;;
+     SunOS) SUN_swap_mon
+     ;;
+esac
+
+## End of all-in-one_swapmon.ksh
+swap -s|sed -e 's/k/ /g' -e 's/[^0-9| ]//g'|awk '{print $4+$3" "$3" "$4}'

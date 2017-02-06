@@ -1,0 +1,83 @@
+#!/bin/sh
+#
+#get_IPv4_network_errors
+# 1.1.1.1 接口概念
+# IP层网络性能错误统计指标（IPv4）
+#  1.1.1.2 输入
+#  无
+#   1.1.1.3 输出
+#   采集时间、
+#   indsc/s
+#   hder/s（每秒因为IP头错误所丢弃的包的个数）
+#   ader/s（每秒因为IP目的地址错误所丢弃的包的个数）
+#   unkp/s（每秒因为未知或不支持的协议所丢弃的包的个数）
+#   ratim/s
+#   rfail/s（每秒因为IP重组算法所导致的失败的个数）
+#   otdsc/s
+#   nort/s（每秒因为没有找到路由而丢弃的IP数据报文的个数）
+exists()
+{
+	type $1 2&>1 /dev/null
+}
+AIX(){ df -k|tail +2|sed 's/%//g';}
+#Digital(){ ;}
+FreeBSD(){ :;}
+HP_UX(){ :;}
+#Irix(){ :;}
+Linux(){ sar -SW 1 1|tail -1;}
+#Linux(){ dx -kP|tail -n+2|sed 's/%//g'; echo $?;}
+#OS390(){ ;}
+SCO_SV(){ df -kP|tail -n+2|sed 's/%//g';}
+SunOS(){ echo '-' '-' '-' '-' '-' '-' '-' '-' '-';}
+#Tru64(){ ;}
+UnixWare(){ df -kP|tail -n+2|sed 's/%//g';}
+#Win32
+default(){ df -k|tail +2|sed 's/%//g';}
+
+INTERVAL=10	# Defines the total number of sampling intervals
+HOST=`hostname`
+OS=`uname`	# Defines the UNIX flavor
+SECS=30		# Defines the number of seconds for each sample
+STATCOUNT=0	# Initialize a loop counter to 0, zero
+
+###################################################
+##### SETUP THE ENVIRONMENT FOR EACH OS HERE ######
+###################################################
+$OS
+
+# These "F-numbers" point to the correct field in the
+# command output for each UNIX flavor.
+
+       #echo " The Operating System is $OS "
+##Linux
+#exit
+#case $OS in
+#AIX)
+#	$AIX
+#       ;;
+#HP-UX)
+#	$HP_UX
+#       ;;
+#Linux)
+#	echo $Linux
+#	exec $Linux
+#       ;;
+#SCO_SV)
+#	$SCO_SV
+#       ;;
+#SunOS)  
+#	$SunOS
+#       ;;
+#UnixWare)
+#	$UnixWare
+#       ;;
+#*)# echo " ERROR: $OS is not a supported operating system "
+#	$default
+#  # echo " ...EXITING... "
+#   exit 1
+#   ;;
+#esac
+#
+####################################################
+######### BEGIN GATHERING STATISTICS HERE ##########
+####################################################

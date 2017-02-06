@@ -1,0 +1,11 @@
+#
+# do_as_user <user> <command>
+# Execute command as another user
+#
+do_as_user ()
+{
+    local user="$1";
+    local  cmd="$2";
+
+    su "${user}" -c "sh -c '${cmd}'";
+}

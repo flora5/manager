@@ -1,0 +1,85 @@
+#!/bin/sh
+#
+#get_ICMPv4_activity
+# 1.1.1.1 接口概念
+# ICMP层活动状况通用统计指标
+#  1.1.1.2 输入
+#  无
+#   1.1.1.3 输出
+#   采集时间、
+#   intot/s（每秒收到的ICMP报文数量）
+#   outtot/s（每秒发送的ICMP报文数量）
+#   inecho/s（每秒收到的Echo报文请求数量）
+#   inerep/s（每秒收到的Echo-Reply报文响应数量）
+#   otecho/s（每秒发送的Echo报文请求数量）
+#   oterep/s（每秒发送的Echo-Reply报文响应数量）
+exists()
+{
+	type $1 2&>1 /dev/null
+}
+AIX(){ df -k|tail +2|sed 's/%//g';}
+#Digital(){ ;}
+FreeBSD(){ :;}
+HP_UX(){ :;}
+#Irix(){ :;}
+Linux(){ sar -Sm 1 1|tail -1;}
+#Linux(){ dx -kP|tail -n+2|sed 's/%//g'; echo $?;}
+#OS390(){ ;}
+SCO_SV(){ echo '-' '-' '-' '-' '-' '-';}
+SunOS(){ echo '-' '-' '-' '-' '-' '-';}
+#Tru64(){ ;}
+UnixWare(){ df -kP|tail -n+2|sed 's/%//g';}
+#Win32
+default(){ df -k|tail +2|sed 's/%//g';}
+
+INTERVAL=10	# Defines the total number of sampling intervals
+HOST=`hostname`
+OS=`uname`	# Defines the UNIX flavor
+SECS=30		# Defines the number of seconds for each sample
+STATCOUNT=0	# Initialize a loop counter to 0, zero
+DATE=`date "+%Y-%m-%d %H:%M:%S"`
+
+###################################################
+##### SETUP THE ENVIRONMENT FOR EACH OS HERE ######
+###################################################
+#$OS
+#$OS|tr "\n" " "|sed "s/[0123456789:\-]* /${DATE} /"
+x=`$OS|tr "\n" " "`
+echo $x|sed "s/[0123456789:\-]* /${DATE} /"
+
+# These "F-numbers" point to the correct field in the
+# command output for each UNIX flavor.
+
+       #echo " The Operating System is $OS "
+##Linux
+#exit
+#case $OS in
+#AIX)
+#	$AIX
+#       ;;
+#HP-UX)
+#	$HP_UX
+#       ;;
+#Linux)
+#	echo $Linux
+#	exec $Linux
+#       ;;
+#SCO_SV)
+#	$SCO_SV
+#       ;;
+#SunOS)  
+#	$SunOS
+#       ;;
+#UnixWare)
+#	$UnixWare
+#       ;;
+#*)# echo " ERROR: $OS is not a supported operating system "
+#	$default
+#  # echo " ...EXITING... "
+#   exit 1
+#   ;;
+#esac
+#
+####################################################
+######### BEGIN GATHERING STATISTICS HERE ##########
+####################################################

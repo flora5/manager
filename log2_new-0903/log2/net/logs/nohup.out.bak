@@ -1,0 +1,54 @@
+Segmentation fault
+XXX lineno: 364, opcode: 224
+'import site' failed; use -v for traceback
+*** glibc detected *** python: munmap_chunk(): invalid pointer: 0x08096e48 ***
+======= Backtrace: =========
+/lib/tls/i686/cmov/libc.so.6(cfree+0x1bb)[0xb7e1161b]
+python(PyGrammar_RemoveAccelerators+0x42)[0x8109262]
+python(Py_Finalize+0x12b)[0x80ea34b]
+python(Py_Main+0x468)[0x8058d68]
+python(main+0x22)[0x80587f2]
+/lib/tls/i686/cmov/libc.so.6(__libc_start_main+0xe0)[0xb7db8450]
+python[0x8058761]
+======= Memory map: ========
+08048000-08140000 r-xp 00000000 08:01 285388     /usr/bin/python2.5
+08140000-08165000 rw-p 000f7000 08:01 285388     /usr/bin/python2.5
+08165000-08249000 rw-p 08165000 00:00 0          [heap]
+b7cb1000-b7cbb000 r-xp 00000000 08:01 24451      /lib/libgcc_s.so.1
+b7cbb000-b7cbc000 rw-p 0000a000 08:01 24451      /lib/libgcc_s.so.1
+b7cc8000-b7cc9000 rw-p b7cc8000 00:00 0 
+b7cc9000-b7ccd000 r-xp 00000000 08:01 465468     /usr/lib/python2.5/lib-dynload/binascii.so
+b7ccd000-b7cce000 rw-p 00003000 08:01 465468     /usr/lib/python2.5/lib-dynload/binascii.so
+b7cce000-b7cd3000 r-xp 00000000 08:01 465463     /usr/lib/python2.5/lib-dynload/_struct.so
+b7cd3000-b7cd4000 rw-p 00005000 08:01 465463     /usr/lib/python2.5/lib-dynload/_struct.so
+b7cd4000-b7cd7000 r-xp 00000000 08:01 465500     /usr/lib/python2.5/lib-dynload/time.so
+b7cd7000-b7cd9000 rw-p 00002000 08:01 465500     /usr/lib/python2.5/lib-dynload/time.so
+b7cd9000-b7ce0000 r--s 00000000 08:01 487919     /usr/lib/gconv/gconv-modules.cache
+b7ce0000-b7d1f000 r--p 00000000 08:01 312261     /usr/lib/locale/zh_CN.utf8/LC_CTYPE
+b7d1f000-b7da2000 rw-p b7d1f000 00:00 0 
+b7da2000-b7eeb000 r-xp 00000000 08:01 41974      /lib/tls/i686/cmov/libc-2.7.so
+b7eeb000-b7eec000 r--p 00149000 08:01 41974      /lib/tls/i686/cmov/libc-2.7.so
+b7eec000-b7eee000 rw-p 0014a000 08:01 41974      /lib/tls/i686/cmov/libc-2.7.so
+b7eee000-b7ef1000 rw-p b7eee000 00:00 0 
+b7ef1000-b7f14000 r-xp 00000000 08:01 41982      /lib/tls/i686/cmov/libm-2.7.so
+b7f14000-b7f16000 rw-p 00023000 08:01 41982      /lib/tls/i686/cmov/libm-2.7.so
+b7f16000-b7f18000 r-xp 00000000 08:01 42008      /lib/tls/i686/cmov/libutil-2.7.so
+b7f18000-b7f1a000 rw-p 00001000 08:01 42008      /lib/tls/i686/cmov/libutil-2.7.so
+b7f1a000-b7f1b000 rw-p b7f1a000 00:00 0 
+b7f1b000-b7f1d000 r-xp 00000000 08:01 41980      /lib/tls/i686/cmov/libdl-2.7.so
+b7f1d000-b7f1f000 rw-p 00001000 08:01 41980      /lib/tls/i686/cmov/libdl-2.7.so
+b7f1f000-b7f33000 r-xp 00000000 08:01 42000      /lib/tls/i686/cmov/libpthread-2.7.so
+b7f33000-b7f35000 rw-p 00013000 08:01 42000      /lib/tls/i686/cmov/libpthread-2.7.so
+b7f35000-b7f37000 rw-p b7f35000 00:00 0 
+b7f37000-b7f3a000 r-xp 00000000 08:01 465471     /usr/lib/python2.5/lib-dynload/cStringIO.so
+b7f3a000-b7f3b000 rw-p 00003000 08:01 465471     /usr/lib/python2.5/lib-dynload/cStringIO.so
+b7f3b000-b7f3e000 r-xp 00000000 08:01 465478     /usr/lib/python2.5/lib-dynload/fcntl.so
+b7f3e000-b7f3f000 rw-p 00003000 08:01 465478     /usr/lib/python2.5/lib-dynload/fcntl.so
+b7f3f000-b7f42000 r-xp 00000000 08:01 465495     /usr/lib/python2.5/lib-dynload/select.so
+b7f42000-b7f43000 rw-p 00002000 08:01 465495     /usr/lib/python2.5/lib-dynload/select.so
+b7f43000-b7f45000 rw-p b7f43000 00:00 0 
+b7f45000-b7f46000 r-xp b7f45000 00:00 0          [vdso]
+b7f46000-b7f60000 r-xp 00000000 08:01 24406      /lib/ld-2.7.so
+b7f60000-b7f62000 rw-p 00019000 08:01 24406      /lib/ld-2.7.so
+bfa23000-bfa3a000 rw-p bffe9000 00:00 0          [stack]
+Fatal Python error: GC object already tracked

@@ -1,0 +1,82 @@
+#!/usr/bin/ksh
+#项目中最常见的监视任务是监视整个文件系统，在不同的UNIX系统上，监视方法都是相同的，但是命令以及输出结果的字段略有不同，形成这种差别是由于不同的UNIX有着不同的命令语法及输出字段。
+#
+#        客户要求我们需要对以下平台的UNIX进行监控：Sgi Irix，IBM AIX，Redhat Linux，SUN Solaris，HP HP-UX。
+#
+#UNIX操作系统本身就是一个超级编译器，所以对于程序员来说，使用并了解现有的命令及功能尤其重要了。       
+#
+#首先，我们来看一下获得所需的命令语法：
+#
+#AIX中以KB字节或1024字节块查看文件系统的命令是df -k.命令执行结果有一下几列：
+#
+#Filesystem        1024-blocks    free  %used    Iused   %Iused    Mounted on
+#
+#我们关心的是第一个：filesystem设备，第四个，以及第七个，至少有2个原因让我们需要了解文件系统设备和装配点。第一个原因是了解文件系统是不是一个NFS装配文件系统，如果NFS那么显示的是NFS服务器名称。第二个原因是不希望监视一个已经装配的CDROM，CD-ROM总是显示 100%使用，作为只读设备来安装。
+#
+#我们首先去掉这些标题。使用参数  df -k | tail +2
+#
+#这样去掉了标题，但是还是有很多信息不是我们需要的，/cdrom 不需要显示，/proc装配点没有值表示，只是一个“-”符号。驱除这个内容，我们使用egrep语句：df -k | tail +2 |egrep -v "/dev/cd[0-9]/proc"
+#
+#我们使用egrep和-v开关，-v表示显示除了模式匹配的内容外的所有内容。egrep用于扩展正则表达式
+#
+#这样我们发现还是有一些信息是我们不需要的列，，现在我们感兴趣的列在1、4、7列中，我们可以使用awk语句来提取这些数据，列的位置我们可以使用位置参数来选择，我们使用awk来进行扩展：
+#
+#df -k | tail +2 |  egrep -v "/dev/cd[0-9]/proc"  |   awk " { print  ,, } "
+#
+#为了便于命令输出，我们可以把结果写到一个文件并对文件进行处理。在脚本中，我们定义了一个文件，并使用一个变量来指向文件
+#
+#WORKFILE="/tmp/df.work"
+#
+#>$WORKFILE  #初始化长度为0。
+#
+#监视文件系统，我们需要确定一个触发阀值，超过这个阀值认为文件系统已经满了，在我们的客户要求中，超过85%我们就认为容量已经满了，我们可以将变量值赋给FSMAX，我们定义FSMAX="85"。还有一个问题：$WORKFILE仍然包括一个一个百分号，我们需要一个整数值来和$FSMAX进行比较，我们可以使用sed命令来进行转换，sed用于字符的替换，在这里用于字符的删除，，还有一个问题：超过了85%的门限，最加一条消息到$ OUTFILE。以表示超过了的消息
+#
+#
+# SCRIPT: fs_mon_AIX.ksh
+# AUTHOR: xu jianming
+# DATE: 02-7-2007
+# REV: 1.0
+# PURPOSE: This script is used to monitor for full filesystems,
+#     which is defined as "exceeding" the FSMAX value.
+#     A message is displayed for all "full" filesystems.
+#
+# PLATFORM: AIX
+#
+# REV LIST:
+#
+# set -n # Uncomment to check syntax without any execution
+# set -x # Uncomment to debug this script
+#
+##### DEFINE FILES AND VARIABLES HERE #### 
+
+WORKFILE="/tmp/df.work" # Holds filesystem data
+>$WORKFILE              # Initialize to empty
+OUTFILE="/tmp/df.outfile" # Output display file
+>$OUTFILE  # Initialize to empty
+THISHOST=`hostname` # Hostname of this machine
+FSMAX="85"              # Max. FS percentage value
+
+######## START OF MAIN #############
+
+# Get the data of interest by stripping out /dev/cd#,
+# /proc rows and keeping columns 1, 4 and 7
+
+df -k | tail -n +2 | egrep -v "/dev/cd[0-9]|/proc" | awk '{print $1" "$5" "$6 }' > $WORKFILE
+
+# Loop through each line of the file and compare column 2
+
+while read FSDEVICE FSVALUE FSMOUNT
+do
+      FSVALUE=$(echo $FSVALUE | sed s/%//g) # Remove the % sign
+      if [ $FSVALUE -gt $FSMAX ]
+      then
+          echo "$FSDEVICE mounted on $FSMOUNT is $%" >> $OUTFILE
+      fi
+done < $WORKFILE
+
+if [ -s $OUTFILE ]
+then
+      echo " Full Filesystem(s) on $THISHOST "
+      cat $OUTFILE
+      print
+fi

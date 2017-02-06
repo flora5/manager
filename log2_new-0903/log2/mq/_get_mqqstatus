@@ -1,0 +1,8 @@
+#!/bin/sh
+
+date "+%H:%M:%S"
+while read line
+do
+echo "DISPLAY QSTATUS('"$line"')"|runmqsc|python mq.py $line
+done < QSTATUS.CONF
+

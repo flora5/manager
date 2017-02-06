@@ -1,0 +1,6 @@
+all_users: [110, 4]
+cpu_performance: [10, 5]
+disk_space: [12, 2]
+memory_performance: [12, 2]
+processes_snapshot: [12, 34]
+swap_space: [90, 80]

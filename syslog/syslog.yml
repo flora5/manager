@@ -1,0 +1,12 @@
+---
+LOGMSG: 
+- PRI TIME HOST SERV MESG
+- TIME HOST SERV MESG
+- MESG
+PRI: <\d+>
+TIME: (?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) [\d ]\d \d\d:\d\d:\d\d
+HOST: \S+
+SERV: '\S+:'
+MESG: .*$
+
+...

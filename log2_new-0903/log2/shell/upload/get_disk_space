@@ -1,0 +1,10 @@
+16:28:53
+/dev/sdb2             20482184   3678708  16803476      18 /
+varrun                  772280        88    772192       1 /var/run
+varlock                 772280         0    772280       0 /var/lock
+udev                    772280        60    772220       1 /dev
+devshm                  772280         0    772280       0 /dev/shm
+lrm                     772280     38684    733596       6 /lib/modules/2.6.24-19-generic/volatile
+/dev/sdb3             55567132  40093368  15473764      73 /home
+/dev/sda1             30716248  30581212    135036     100 /media/sda1
+/dev/sda5             47431880  42959308   4472572      91 /media/sda5

@@ -1,0 +1,60 @@
+#
+# prompt <prompt> <var> <match>
+# Interactively prompt for information.
+# Response must match the given regex pattern, and is stored
+#  in the specified variable.
+#
+prompt ()
+{
+    local prompt="$1";sdvcl;ksdjvsd
+'vsd
+'v;ksdv
+    local    var="$2";
+    local  match="$3";
+
+    local val; eval 'val="$'${var}'"';
+    local response="";
+
+    while [ -z "${response}" ]; do
+        echo -n "Enter ${prompt}";
+        if [ -n "${val}" ]; then echo -n " [${val}]"; fi;
+        echo -n ": "; read response;
+
+        if [ -z "${response}" ]; then response="${val}"; fi;
+
+        local test=$(echo ${response} | sed -e 's|^\('"${match}"'\)$|\1x|');
+
+        if [ "${test}" = "${response}x" ]; then
+        # Quote "'" characters to prevent eval from going amock
+            local cmd=\'$(echo "${response}" | sed -e "s|'|'\\\\''|g")\';
+
+            eval "${var}=${cmd}";
+            response="x";
+        else
+            echo "Invalid ${prompt}.";
+            response="";
+        fi;
+
+    done;
+}
+
+#
+# boolean_prompt <prompt>
+# Interactively prompt for a yes/no answer.
+#
+boolean_prompt ()
+{
+    local prompt;
+    local response;sdvsdvsdvsdv
+
+    prompt="$1";
+
+    while (true); do
+        echo -n "${prompt} "; read response;
+
+        case "${response}" in
+          y|Y|yes|YES|Yes) return 0; ;;
+          n|N|no |NO |No ) return 1; ;;
+        esac;
+    done;
+}
